@@ -11,6 +11,8 @@ package gmp;
 import java.math.BigInteger;
 import java.io.*;
 
+import static apron.Abstract0.loadLibrary;
+
 /**
  * MPFR multi-precision floating-point numbers.
  *
@@ -59,7 +61,7 @@ public class Mpfr
 
     private static native void class_init();
 
-    static { System.loadLibrary("jgmp"); class_init(); }
+    static { loadLibrary("jgmp"); class_init(); }
 
 
     // Constructors

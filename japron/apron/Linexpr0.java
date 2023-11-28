@@ -10,6 +10,8 @@ package apron;
 
 import java.io.*;
 
+import static apron.Abstract0.loadLibrary;
+
 /**
  * Class of level 0 linear expressions.
  *
@@ -47,7 +49,7 @@ public class Linexpr0
 
     private static native void class_init();
 
-    static { System.loadLibrary("japron"); class_init(); }
+    static { loadLibrary("japron"); class_init(); }
 
     
     // Constructors

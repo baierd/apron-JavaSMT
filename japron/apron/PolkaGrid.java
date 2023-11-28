@@ -8,6 +8,8 @@
 
 package apron;
 
+import static apron.Abstract0.loadLibrary;
+
 /**
  * Manager factory for the reduced product of the {@link apron.Polka} 
  * convex polyhedra and {@link apron.PplGrid} the linear congruence
@@ -24,7 +26,7 @@ public class PolkaGrid
 
     private static native void class_init();
 
-    static { System.loadLibrary("japron"); class_init(); }
+    static { loadLibrary("japron"); class_init(); }
 
 
     // Constructors

@@ -10,6 +10,8 @@ package gmp;
 
 import java.io.*;
 
+import static apron.Abstract0.loadLibrary;
+
 /**
  * Class of references to numerators and denominator of {@link gmp.Mpq}
  * objects.
@@ -60,7 +62,7 @@ public class MpzRef extends Mpz
 
     private static native void class_init();
 
-    static { System.loadLibrary("jgmp"); class_init(); }   
+    static { loadLibrary("jgmp"); class_init(); }
 
     /**
      * A MpzRef represents a reference and cannot be serialized. 

@@ -10,6 +10,8 @@ package gmp;
 
 import java.io.*;
 
+import static apron.Abstract0.loadLibrary;
+
 /**
  * Pseudo-random number generation states.
  *
@@ -40,7 +42,7 @@ public class RandState
 
     private static native void class_init();
 
-    static { System.loadLibrary("jgmp"); class_init(); }
+    static { loadLibrary("jgmp"); class_init(); }
 
 
     // Constructors

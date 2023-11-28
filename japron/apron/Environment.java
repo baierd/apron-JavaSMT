@@ -10,6 +10,8 @@ package apron;
 
 import java.io.*;
 
+import static apron.Abstract0.loadLibrary;
+
 /**
  * <p> Class of environments for level 1 objects.
  *
@@ -55,7 +57,7 @@ public class Environment
 
     private static native void class_init();
 
-    static { System.loadLibrary("japron"); class_init(); }
+    static { loadLibrary("japron"); class_init(); }
 
 
     // Constructors

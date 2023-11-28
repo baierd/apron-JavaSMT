@@ -8,6 +8,11 @@
 
 package apron;
 
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Optional;
+
 /**
  * Class of level 0 numerical abstract values.
  *
@@ -50,7 +55,117 @@ public class Abstract0
 
     private static native void class_init();
 
-    static { System.loadLibrary("japron"); class_init(); }
+    static { loadLibrary("japron"); class_init(); }
+    
+    
+    public static void loadLibrary(String name) {
+        try {
+            Optional<Path> path = findPathForLibrary(name);
+            if (path.isPresent()) {
+                System.load(path.orElseThrow().toAbsolutePath().toString());
+            } else {
+                System.loadLibrary(name);
+            }
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Apron custom loading failed and Apron is not available", e);
+        }
+    }
+
+    private static Optional<Path> findPathForLibrary(String libraryName) throws URISyntaxException {
+        String osLibName = System.mapLibraryName(libraryName);
+        Path p = getNativeLibraryPath().resolve(osLibName).toAbsolutePath();
+        if (Files.exists(p)) {
+            return Optional.of(p);
+        }
+        p =
+                Path.of(Abstract0.class.getProtectionDomain().getCodeSource().getLocation().toURI()).resolveSibling(osLibName).toAbsolutePath();
+        if (Files.exists(p)) {
+            return Optional.of(p);
+        }
+        return Optional.empty();
+    }
+
+    private static Path nativePath = null;
+
+    private static Path getNativeLibraryPath() {
+        if (nativePath == null) {
+            String arch = guessVmArchitecture().toLowerCase();
+            String os = "LINUX".toLowerCase();
+
+            nativePath =
+                    getCodeLocation(Abstract0.class)
+                            .getParent()
+                            .getParent()
+                            .getParent()
+                            .resolve(Path.of("native", arch + "-" + os));
+        }
+        return nativePath;
+    }
+
+    private static Path getCodeLocation(Class<?> cls) {
+        try {
+            return Path.of(cls.getProtectionDomain().getCodeSource().getLocation().toURI());
+        } catch (URISyntaxException e) {
+            throw new AssertionError(e);
+        }
+    }
+
+    private static String currentArch = null;
+
+    private static String guessVmArchitecture() {
+        if (currentArch != null) {
+            return currentArch;
+        }
+        String prop = System.getProperty("os.arch.data.model");
+        if (prop == null || prop.isEmpty()) {
+            prop = System.getProperty("sun.arch.data.model");
+        }
+
+        if (prop != null && !prop.isEmpty()) {
+            switch (prop) {
+                case "32":
+                    currentArch = "X86";
+                    break;
+                case "64":
+                    currentArch = "X86_64";
+                    break;
+                default:
+                    throw new UnsatisfiedLinkError(
+                            "Unknown value for os.arch.data.model: '"
+                                    + prop
+                                    + "', please report this together with information about your system "
+                                    + "(OS, architecture, JVM).");
+            }
+        } else {
+
+            prop = "java.vm.name";
+            if (prop != null && !prop.isEmpty() ) {
+                prop = prop.toLowerCase();
+
+                if (prop.contains("32-bit") || prop.contains("32bit") || prop.contains("i386")) {
+
+                    currentArch = "X86";
+                } else if (prop.contains("64-bit")
+                        || prop.contains("64bit")
+                        || prop.contains("x64")
+                        || prop.contains("x86_64")
+                        || prop.contains("amd64")) {
+
+                    currentArch = "X86_64";
+                } else {
+                    throw new UnsatisfiedLinkError(
+                            "Unknown value for java.vm.name: '"
+                                    + prop
+                                    + "', please report this together with information about your system "
+                                    + "(OS, architecture, JVM).");
+                }
+            } else {
+                throw new UnsatisfiedLinkError("Could not detect system architecture");
+            }
+        }
+
+        return currentArch;
+    }
 
     private Abstract0() { }
 

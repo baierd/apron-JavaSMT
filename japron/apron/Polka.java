@@ -8,6 +8,8 @@
 
 package apron;
 
+import static apron.Abstract0.loadLibrary;
+
 /**
  * Manager factory for the convex polyhedron abstract domain.
  */
@@ -22,7 +24,7 @@ public class Polka
 
     private static native void class_init();
 
-    static { System.loadLibrary("japron"); class_init(); }
+    static { loadLibrary("japron"); class_init(); }
 
 
     // Constructors

@@ -8,6 +8,8 @@
 
 package apron;
 
+import static apron.Abstract0.loadLibrary;
+
 /**
  * Manager factory for the Parma Polyhedra Library linear
  * congruence equalities domain.
@@ -23,7 +25,7 @@ public class PplGrid
 
     private static native void class_init();
 
-    static { System.loadLibrary("japron"); class_init(); }
+    static { loadLibrary("japron"); class_init(); }
 
 
     // Constructors

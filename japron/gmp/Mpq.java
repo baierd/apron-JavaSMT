@@ -11,6 +11,8 @@ package gmp;
 import java.math.BigInteger;
 import java.io.*;
 
+import static apron.Abstract0.loadLibrary;
+
 /**
  * GMP arbitrary precision rationals.
  *
@@ -35,7 +37,7 @@ public class Mpq
 
     private static native void class_init();
 
-    static { System.loadLibrary("jgmp"); class_init(); }
+    static { loadLibrary("jgmp"); class_init(); }
 
 
     // Canonicalization

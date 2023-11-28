@@ -8,6 +8,8 @@
 
 package apron;
 
+import static apron.Abstract0.loadLibrary;
+
 /**
  * Class of numerical abstract domain instances.
  *
@@ -45,7 +47,7 @@ public class Manager
 
     private static native void class_init();
 
-    static { System.loadLibrary("japron"); class_init(); }
+    static { loadLibrary("japron"); class_init(); }
 
 
     // Operation identifiers

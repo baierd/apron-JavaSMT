@@ -11,6 +11,8 @@ package apron;
 
 import java.util.Arrays;
 
+import static apron.Abstract0.loadLibrary;
+
 /**
  * Manager factory for the PPLite domains.
  */
@@ -25,7 +27,7 @@ public class Pplite
 
     private static native void class_init();
 
-    static { System.loadLibrary("japron"); class_init(); }
+    static { loadLibrary("japron"); class_init(); }
 
 
     // Constructors
